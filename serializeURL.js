@@ -1,13 +1,14 @@
 /**
  * @author Brave <u9648u6653u52c7@gmail.com>
  * serializeURL
+ * scheme:[//[user[:password]@]host[:port]][/path][?query][#fragment]
  * @param {String} input
  * @return {Object}
  */
 function serializeURL(input) {
     if (typeof input === 'string') {
         var url = input;
-        var URL_REGEXP = /(\w+):\/\/(?:(\w+):(.+)@)?([^/:?#]+)(?::(\d*))?([^?#]*)([^#]*)(.*)/;
+        var URL_REGEXP = /(\w+):(?:\/\/)?(?:([^:]+)(?::(.+))?@)?([^/:?#]+)(?::(\d*))?([^?#]*)([^#]*)(.*)/;
         if (URL_REGEXP.test(url)) {
             var dict = {};
             var arr = URL_REGEXP.exec(url);
