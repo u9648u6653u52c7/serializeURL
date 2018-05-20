@@ -12,14 +12,14 @@ function serializeURL(input) {
         if (URL_REGEXP.test(url)) {
             var dict = {};
             var arr = URL_REGEXP.exec(url);
-            dict.protocol = arr[1] ? arr[1] : '';
-            dict.username = arr[2] ? arr[2] : '';
-            dict.password = arr[3] ? arr[3] : '';
-            dict.host = arr[4] ? arr[4] : '';
-            dict.port = arr[5] ? arr[5] : '';
-            dict.path = arr[6] ? arr[6] : '';
+            dict.protocol = arr[1] || '';
+            dict.username = arr[2] || '';
+            dict.password = arr[3] || '';
+            dict.host = arr[4] || '';
+            dict.port = arr[5] || '';
+            dict.path = arr[6] || '';
             dict.filename = dict.path.split('/').slice(-1).join('');
-            dict.fragment = arr[8] ? arr[8] : '';
+            dict.fragment = arr[8] || '';
             var params = arr[7] ? arr[7].slice(1).split('&'): [];
             var length = params.length;
             if (length > 0) {
