@@ -9,6 +9,7 @@ function serializeURL(input) {
     if (typeof input === 'string') {
         var url = input;
         var URL_REGEXP = /(\w+):(?:\/\/)?(?:([^:]+)(?::(.+))?@)?([^/:?#]+)(?::(\d*))?([^?#]*)([^#]*)(.*)/;
+        var KEY_REGEXP = /(.+)\[(.+)?\]/;
         if (URL_REGEXP.test(url)) {
             var dict = {};
             var arr = URL_REGEXP.exec(url);
@@ -28,7 +29,32 @@ function serializeURL(input) {
                     var l = params[i].split('=')
                     var key = l[0];
                     var value = l[1];
-                    dict.query[key] = value;
+                    if (KEY_REGEXP.test(key)) {
+                        var r = KEY_REGEXP.exec(key);
+                        var k = r[1];
+                        var p = r[2];
+                        if (!!p) {
+                            if (!dict.query[k]) {
+                                dict.query[k] = {}
+                            }
+                            if (({}).toString() === ({}).toString.call(dict.query[k])) {
+                                dict.query[k][p] = value;
+                            } else {
+                                throw 'URL\'s params part has something wrong.';
+                            }
+                        } else {
+                            if (!dict.query[k]) {
+                                dict.query[k] = [];
+                            }
+                            if (({}).toString.call([]) === ({}).toString.call(dict.query[k])) {
+                                dict.query[k].push(value);
+                            } else {
+                                throw 'URL\'s params part has something wrong.';
+                            }
+                        }
+                    } else {
+                        dict.query[key] = value;
+                    }
                 }
             } else {
                 dict.query = {};
